@@ -1,0 +1,42 @@
+package org.splyxz.listener;
+
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.Role;
+import net.dv8tion.jda.api.events.interaction.ButtonClickEvent;
+import net.dv8tion.jda.api.hooks.ListenerAdapter;
+
+import java.awt.*;
+import java.time.Instant;
+
+
+public class weryfikacjaButton extends ListenerAdapter {
+
+    @Override
+    public void onButtonClick(ButtonClickEvent event) {
+        if (event.getChannel().getId().equalsIgnoreCase("ID KANALU")) {
+            if (event.getComponentId().equalsIgnoreCase("weryfikacja")) {
+                Role Gracz = event.getGuild().getRoleById(ID ROLI + L);
+                EmbedBuilder eb = new EmbedBuilder();
+                if (!event.getMember().getRoles().contains(Gracz)) {
+                    event.getGuild().addRoleToMember(event.getMember(), Gracz).queue();
+                    eb.setColor(new Color(0, 0, 0));
+                    eb.setTitle("Weryfikacja");
+                    eb.setDescription("Pomyslnie sie zweryfikowales! milego pobytu na discordzie __Splyxz.pl__");
+                    eb.setFooter("cos tam", event.getGuild().getIconUrl());
+                    eb.setTimestamp(Instant.now());
+                    event.replyEmbeds(eb.build()).setEphemeral(true).complete();
+                    eb.clear();
+                    return;
+                } else {
+                    eb.setColor(new Color(0, 0, 0));
+                    eb.setTitle("Weryfikacja");
+                    eb.setDescription("Blad! Jestes juz zweryfikowany!");
+                    eb.setFooter("cos tam", event.getGuild().getIconUrl());
+                    eb.setTimestamp(Instant.now());
+                    event.replyEmbeds(eb.build()).setEphemeral(true).complete();
+                }
+            }
+        }
+    }
+
+}
