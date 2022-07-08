@@ -31,7 +31,7 @@ public class weryfikacja extends ListenerAdapter {
                 eb.clear();
                 return;
             }
-            TextChannel weryfikacja = event.getGuild().getTextChannelById(IDKANALU L);
+            TextChannel weryfikacja = event.getGuild().getTextChannelById(ID KANALU + L);
             event.getMessage().delete().queue();
             eb.setColor(new Color(0, 0, 0));
             eb.setTitle("Weryfikacja");
