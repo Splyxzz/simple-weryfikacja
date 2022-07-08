@@ -1,0 +1,48 @@
+package org.splyxz.command;
+
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import net.dv8tion.jda.api.interactions.components.Button;
+
+import java.awt.*;
+import java.time.Instant;
+import java.util.concurrent.TimeUnit;
+public class weryfikacja extends ListenerAdapter {
+
+
+    @Override
+    public void onMessageReceived(MessageReceivedEvent event) {
+        if (event.getAuthor().isBot()) return;
+        EmbedBuilder eb = new EmbedBuilder();
+        if (event.getMessage().toString().startsWith("$weryfikacja")) return;
+        String[] args = event.getMessage().getContentRaw().split(" ");
+        if (args[0].equalsIgnoreCase("$weryfikacja")) {
+            if (!event.getMember().hasPermission(Permission.ADMINISTRATOR)) {
+                eb.setTitle(event.getAuthor().getName());
+                eb.setColor(new Color(0, 0, 0));
+                eb.setDescription("Wystapil blad podczas wpisania komendy **$weryfikacja** \nNie posiadasz uprawnien **ADMINISTRATOR**");
+                eb.setFooter("cos tam", event.getGuild().getIconUrl());
+                eb.setThumbnail(event.getGuild().getIconUrl());
+                eb.setTimestamp(Instant.now());
+                event.getChannel().sendMessageEmbeds(eb.build()).complete().delete().queueAfter(5L, TimeUnit.SECONDS);
+                eb.clear();
+                return;
+            }
+            TextChannel weryfikacja = event.getGuild().getTextChannelById(IDKANALU L);
+            event.getMessage().delete().queue();
+            eb.setColor(new Color(0, 0, 0));
+            eb.setTitle("Weryfikacja");
+            eb.setDescription("Aby sie zweryfikowac, widziec wszystkie kanaly czyli korzystac w pelni discorda Splyxz.pl, nacisnij przycisk __Kliknij, aby sie zweryfikowac__");
+            eb.setFooter("cos tam", event.getGuild().getIconUrl());
+            eb.setThumbnail(event.getGuild().getIconUrl());
+            eb.setTimestamp(Instant.now());
+            assert weryfikacja != null;
+            weryfikacja.sendMessageEmbeds(eb.build()).setActionRow(Button.secondary("Weryfikacja", "Kliknij, aby sie zweryfikowac")).queue();
+
+        }
+    }
+}
+
